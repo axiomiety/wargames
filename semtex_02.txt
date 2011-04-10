@@ -1,0 +1,95 @@
+the encrypt fn can take 10 to 20 letters from A-Z.
+for a text of size 10, the aglorithm seems to be well defined
+AAAAAAAAAA,AZZZYYXWVT
+BBBBBBBBBB,BAAAZZYXWU
+CCCCCCCCCC,CBBBAAZYXV
+
+however a soon as the size increases (eg, 11), we get:
+AAAAAAAAAAA,UNSNQMWKSHO
+BBBBBBBBBBB,VOTORNXLTIP
+CCCCCCCCCCC,WPUPSOYMUJQ
+
+from this we deduct the cypher is actually length-dependent
+
+the encrypted text is HRXDZNWEAWWCP which is of length 13.
+
+going with this:
+AAAAAAAAAAAAA,AXMDNNPKTEKUL
+BBBBBBBBBBBBB,BYNEOOQLUFLVM
+CCCCCCCCCCCCC,CZOFPPRMVGMWN
+
+we see there is the pattern below: 
+01  -> +0
+02  -> +23
+03  -> +12
+04  -> +3
+05  -> +13
+06  -> +13
+07  -> +15
+08  -> +10
+09  -> +19
+10  -> +4
+11  -> +10
+12  -> +20
+13  -> +11
+
+however we notice that:
+AAAAAAAAAAAAB,BXMDNNPKTEKUL
+
+notice how changing the last letter to B also changed the first letter. so what we thought was a shift could simply be a swap of the last letter with the first:
+BAAAAAAAAAAAC,CXMDNNPKTELUL
+
+so:
+AAAAAAAAAAAAA,AXMDNNPKTEKUL
+AAAAAAAAAAAAB,BXMDNNPKTEKUL
+BAAAAAAAAAAAC,CXMDNNPKTELUL
+
+at this point it becomes clear that this is not simply a shift cypher. instead the position of the letter in the clear text changes in the encrypted text, and gets shifted.
+
+AAAAAAAAAAAAB,BXMDNNPKTEKUL
+AAAAAAAAAAABC,CXMDNOPKTEKUL
+AAAAAAAAAABAC,CXMDNNPKUEKUL
+AAAAAAAAABAAC,CXMENNPKTEKUL
+AAAAAAAABAAAC,CXMDNNQKTEKUL
+AAAAAAABAAAAC,CYMDNNPKTEKUL
+AAAAAABAAAAAC,CXMDONPKTEKUL
+AAAAABAAAAAAC,CXMDNNPKTEKVL
+
+note: it is worth reminding ourselves that for each shift, we are changing 2 letters. this isn't as intuitive, so let us try again...
+
+AAAAAAAAAAAAA,AXMDNNPKTEKUL
+AAAAAAAAAAAAB,BXMDNNPKTEKUL
+AAAAAAAAAAABB,BXMDNOPKTEKUL
+AAAAAAAAAABBB,BXMDNOPKUEKUL
+AAAAAAAAABBBB,BXMENOPKUEKUL
+AAAAAAAABBBBB,BXMENOQKUEKUL 
+AAAAAAABBBBBB,BYMENOQKUEKUL 
+AAAAAABBBBBBB,BYMEOOQKUEKUL 
+AAAAABBBBBBBB,BYMEOOQKUEKVL 
+AAAABBBBBBBBB,BYNEOOQKUEKVL 
+AAABBBBBBBBBB,BYNEOOQKUFKVL 
+AABBBBBBBBBBB,BYNEOOQKUFKVM
+ABBBBBBBBBBBB,BYNEOOQLUFKVM
+BBBBBBBBBBBBB,BYNEOOQLUFLVM
+
+posn  -> (posn,offset)
+13    -> (1,0)
+12    -> (6,13)
+11    -> (9,19)
+10    -> (4,3)
+09    -> (7,15)
+08    -> (2,23)
+07    -> (5,13)
+06    -> (12,20)
+05    -> (3,12)
+04    -> (10,4)
+03    -> (13,11)
+02    -> (8,10)
+01    -> (11,12)
+
+so to reverse the key, we just count backwards and replace the letters accordingly:
+1234567890123
+HRXDZNWEAWWCP
+MUESLIMUHAHAH
+
+note: i probably got some of the offsets wrong. had to finish the above using a bit of trial and error on 2 or 3 letters. but once you know the posns, working the rest out is straight forward
