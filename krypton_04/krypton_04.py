@@ -6,6 +6,7 @@ import getopt
 # REFERENCES:
 # http://wiki.python.org/moin/HowTo/Sorting/
 # http://docs.python.org/library/getopt.html
+# http://stackoverflow.com/questions/287871/print-in-terminal-with-colors-using-python
 
 def usage():
   print "-f for frequency analysis, -i <inputFile>, -r 'A=M,D=F'"
@@ -38,7 +39,12 @@ def main():
       replace(inputFile,a)
   
 def replace(inputFile, charSet):
-  print "not supported"
+  RED = '\033[91m'
+  ENDC = '\033[0m'
+  for line in open(inputFile,'r'):
+    for (oldChar,newChar) in map(lambda x: x.split('='),charSet.split(',')):
+      line = line.replace(oldChar,RED + newChar + ENDC)
+    print line
 
 def freq(inputFile):
   # generate [A..Z]
