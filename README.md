@@ -1,0 +1,7 @@
+# DEPRECATED - PLEASE USE /otw INSTEAD #
+
+contains information, code, etc... related to wargames
+
+right now, i am focusing on overthewire.org
+
+note that <game_name>_X corresponds to the work required to acquire the password for level X
